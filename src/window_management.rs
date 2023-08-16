@@ -1,10 +1,11 @@
 use sdl2::render::WindowCanvas;
+use crate::{HEIGHT, WIDTH};
 
 pub fn initialize_window() -> Result<(sdl2::Sdl, WindowCanvas), String> {
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
 
-    let window = video_subsystem.window("Conway's Game Of Life", 800, 600)
+    let window = video_subsystem.window("Conway's Game Of Life", (WIDTH * 20) as u32, (HEIGHT * 20) as u32)
         .position_centered()
         .build()
         .expect("Failed to initialize");
