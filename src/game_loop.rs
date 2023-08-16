@@ -12,15 +12,20 @@ enum Speed {
     Slow = (1_000_000_000u32 / 10) as isize,
 }
 
-pub fn run_game_loop(canvas: &mut WindowCanvas, event_pump: &mut EventPump) {
+pub(crate) fn run_game_loop(canvas: &mut WindowCanvas, event_pump: &mut EventPump) {
 
     let mut speed = 30;
     let mut board = vec![false; WIDTH * HEIGHT];
     let mut playing = false;
 
+    let ttf_context = sdl2::ttf::init().unwrap();
+    let font_texture = rendering::load_font("assets/Amatic-Bold.ttf", &ttf_context, 20);
+
     'running: loop {
 
         rendering::draw_board(&mut *canvas, &board, WIDTH, HEIGHT);
+        rendering::render_text(&mut *canvas, "Press P to play/pause", 10, 10, &font_texture);
+        canvas.present();
 
         for event in event_pump.poll_iter() {
             match event {

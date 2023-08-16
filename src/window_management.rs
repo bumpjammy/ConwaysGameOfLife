@@ -1,7 +1,7 @@
 use sdl2::render::WindowCanvas;
 use crate::{HEIGHT, WIDTH};
 
-pub fn initialize_window() -> Result<(sdl2::Sdl, WindowCanvas), String> {
+pub(crate) fn initialize_window() -> Result<(sdl2::Sdl, WindowCanvas), String> {
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
 

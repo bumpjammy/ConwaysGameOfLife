@@ -1,8 +1,9 @@
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 use sdl2::render::{TextureQuery, WindowCanvas};
+use sdl2::ttf::{Font, Sdl2TtfContext};
 
-pub fn draw_board(canvas: &mut WindowCanvas, board: &[bool], width: usize, height: usize) {
+pub(crate) fn draw_board(canvas: &mut WindowCanvas, board: &[bool], width: usize, height: usize) {
     canvas.set_draw_color(Color::RGB(70, 70, 70));
     canvas.clear();
 
@@ -20,15 +21,14 @@ pub fn draw_board(canvas: &mut WindowCanvas, board: &[bool], width: usize, heigh
         square.0 = 0;
         square.1 += 1;
     }
-
-    render_text(&mut *canvas, "Conway's Game Of Life", 10, 10, 30);
-    canvas.present();
 }
 
-fn render_text(canvas: &mut WindowCanvas, text: &str, x: i32, y: i32, size : u16) {
-    let ttf_context = sdl2::ttf::init().unwrap();
-    let font_path = std::path::Path::new("assets/Amatic-Bold.ttf"); //If you get an error here, you need to download the font and put it in the assets folder
-    let font = ttf_context.load_font(font_path, size).unwrap();
+pub(crate) fn load_font<'a>(font_location: &'a str, ttf_context: &'a Sdl2TtfContext, size: u16) -> Font<'a, 'a> {
+    let font_path = std::path::Path::new(font_location); //If you get an error here, you need to download the font and put it in the assets folder
+    ttf_context.load_font(font_path, size).expect("Failed to load font")
+}
+
+pub(crate) fn render_text(canvas: &mut WindowCanvas, text: &str, x: i32, y: i32, font: &Font) {
     let surface = font.render(text).blended(Color::RGBA(255, 255, 255, 150)).unwrap();
     let texture_creator = canvas.texture_creator();
     let texture = texture_creator.create_texture_from_surface(&surface).unwrap();
