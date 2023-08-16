@@ -10,6 +10,9 @@ pub fn handle_event(event: Event, board: &mut Vec<bool>, playing: &mut bool, spe
         Event::KeyDown { keycode: Some(Keycode::P), .. } => {
             *playing = !*playing;
         },
+        Event::KeyDown { keycode: Some(Keycode::R), ..} => {
+            *board = vec![false; WIDTH * HEIGHT];
+        },
         Event::KeyDown { keycode: Some(Keycode::Up), .. } => {
             if *speed < 60 {
                 *speed += 10;
