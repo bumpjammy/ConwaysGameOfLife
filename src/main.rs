@@ -1,7 +1,3 @@
-use std::time::Duration;
-use sdl2::event::Event;
-use sdl2::keyboard::Keycode;
-use crate::game_logic::update_board;
 use crate::game_loop::run_game_loop;
 
 mod event_handling;
