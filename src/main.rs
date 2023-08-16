@@ -6,8 +6,8 @@ mod window_management;
 mod rendering;
 mod game_loop;
 
-pub const WIDTH: usize = 40;
-pub const HEIGHT: usize = 30;
+pub const WIDTH: usize = 80;
+pub const HEIGHT: usize = 40;
 
 fn main() {
     let (sdl_context, mut canvas) = window_management::initialize_window().expect("Failed to initialize window");
