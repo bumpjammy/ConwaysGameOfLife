@@ -1,5 +1,5 @@
 
-pub(crate) fn update_board(board: &mut Vec<bool>, width: usize, height: usize) {
+pub(crate) fn update_board(board: &mut Vec<bool>, generation: &mut usize, width: usize, height: usize) {
     let mut new_board = vec![false; width * height];
     for (index, cell) in board.iter().enumerate() {
         let neighbors = get_neighbours(index as i32, height as i32, width as i32);
@@ -19,6 +19,7 @@ pub(crate) fn update_board(board: &mut Vec<bool>, width: usize, height: usize) {
             }
         }
     }
+    *generation += 1;
     *board = new_board;
 }
 

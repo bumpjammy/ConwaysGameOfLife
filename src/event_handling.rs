@@ -2,16 +2,17 @@ use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use crate::{game_logic, HEIGHT, WIDTH};
 
-pub(crate) fn handle_event(event: Event, board: &mut Vec<bool>, playing: &mut bool, speed: &mut isize) {
+pub(crate) fn handle_event(event: Event, board: &mut Vec<bool>, playing: &mut bool, speed: &mut isize, generation: &mut usize) {
     match event {
         Event::KeyDown { keycode: Some(Keycode::Space), .. } => {
-            game_logic::update_board(&mut *board, WIDTH, HEIGHT);
+            game_logic::update_board(&mut *board, &mut *generation,WIDTH, HEIGHT);
         },
         Event::KeyDown { keycode: Some(Keycode::P), .. } => {
             *playing = !*playing;
         },
         Event::KeyDown { keycode: Some(Keycode::R), ..} => {
             *board = vec![false; WIDTH * HEIGHT];
+            *generation = 0;
         },
         Event::KeyDown { keycode: Some(Keycode::Up), .. } => {
             if *speed < 60 {

@@ -17,14 +17,16 @@ pub(crate) fn run_game_loop(canvas: &mut WindowCanvas, event_pump: &mut EventPum
     let mut speed = 30;
     let mut board = vec![false; WIDTH * HEIGHT];
     let mut playing = false;
+    let mut generation:usize = 0;
 
     let ttf_context = sdl2::ttf::init().unwrap();
-    let font_texture = rendering::load_font("assets/Amatic-Bold.ttf", &ttf_context, 20);
+    let small_font = rendering::load_font("assets/Amatic-Bold.ttf", &ttf_context, 30);
+    let large_font = rendering::load_font("assets/Amatic-Bold.ttf", &ttf_context, 40);
 
     'running: loop {
 
         rendering::draw_board(&mut *canvas, &board, WIDTH, HEIGHT);
-        rendering::render_text(&mut *canvas, "Press P to play/pause", 10, 10, &font_texture);
+        rendering::render_instructions(&mut *canvas, &small_font, &large_font, playing, speed, generation);
         canvas.present();
 
         for event in event_pump.poll_iter() {
@@ -34,13 +36,13 @@ pub(crate) fn run_game_loop(canvas: &mut WindowCanvas, event_pump: &mut EventPum
                     break 'running;
                 },
                 _ => {
-                    event_handling::handle_event(event, &mut board, &mut playing, &mut speed);
+                    event_handling::handle_event(event, &mut board, &mut playing, &mut speed, &mut generation);
                 }
             }
         }
 
         if playing {
-            update_board(&mut board, WIDTH, HEIGHT);
+            update_board(&mut board, &mut generation, WIDTH, HEIGHT);
         }
 
         std::thread::sleep(Duration::new(0, 1_000_000_000u32 / speed as u32));
